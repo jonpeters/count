@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
   MdCardModule, MdToolbarModule, MdMenuModule, MdIconModule, MdButtonModule,
-  MdSidenavModule, MdDialogModule, MdInputModule
+  MdSidenavModule, MdDialogModule, MdInputModule, MdSnackBarModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
@@ -40,6 +40,7 @@ const routes: Routes = [{
     MdSidenavModule,
     MdDialogModule,
     MdInputModule,
+    MdSnackBarModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
