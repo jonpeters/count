@@ -1,1 +1,26 @@
-<router-outlet></router-outlet>
+<div style="position: absolute; width: 100%; height: 100%; background-color: green">
+  <md-toolbar color="primary" style="height: 70px">
+    <button md-icon-button (click)="sideNavMenu.toggle()">
+      <md-icon>menu</md-icon>
+    </button>
+
+    <span>Test, Material in Angular 2!</span>
+
+    <button md-icon-button [md-menu-trigger-for]="menu">
+      <md-icon>more_vert</md-icon>
+    </button>
+  </md-toolbar>
+  <md-menu x-position="before" #menu="mdMenu">
+    <button md-menu-item>Option 1</button>
+    <button md-menu-item>Option 2</button>
+  </md-menu>
+
+  <md-sidenav-container style="position: absolute; width: 100%; top: 70px; bottom:0px">
+    <md-sidenav #sideNavMenu mode="over">
+      [placeholder]
+    </md-sidenav>
+
+    <router-outlet></router-outlet>
+
+  </md-sidenav-container>
+</div>
