@@ -6,11 +6,12 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
   MdCardModule, MdToolbarModule, MdMenuModule, MdIconModule, MdButtonModule,
-  MdSidenavModule
+  MdSidenavModule, MdDialogModule, MdInputModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from './home/home.component';
+import { NewCategoryDialogComponent } from './new-category-dialog/new-category-dialog.component';
 
 const routes: Routes = [{
   path: '',
@@ -24,7 +25,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    NewCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -36,10 +38,13 @@ const routes: Routes = [{
     MdIconModule,
     MdButtonModule,
     MdSidenavModule,
+    MdDialogModule,
+    MdInputModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ NewCategoryDialogComponent ]
 })
 export class AppModule { }

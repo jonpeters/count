@@ -1,0 +1,10 @@
+<h2 md-dialog-title>New Category Name</h2>
+<md-dialog-content>
+  <md-input-container>
+    <input mdInput [(ngModel)]="data.categoryName" required placeholder="Category Name">
+  </md-input-container>
+</md-dialog-content>
+<md-dialog-actions>
+  <button md-button [md-dialog-close]="false">Cancel</button>
+  <button md-button [md-dialog-close]="true">OK</button>
+</md-dialog-actions>

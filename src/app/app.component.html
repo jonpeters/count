@@ -7,7 +7,7 @@
 
   <md-sidenav-container style="position: absolute; width: 100%; top: 70px; bottom:0px">
     <md-sidenav #sideNavMenu mode="over" style="background-color: #fafafa">
-      <div class="sideNavItem">
+      <div class="sideNavItem" (click)="handleNewCategory()">
         <div class="inner">
           <md-icon>add_circle_outline</md-icon>
           <span>New Category</span>
