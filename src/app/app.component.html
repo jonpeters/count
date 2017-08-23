@@ -16,8 +16,37 @@
   </md-menu>
 
   <md-sidenav-container style="position: absolute; width: 100%; top: 70px; bottom:0px">
-    <md-sidenav #sideNavMenu mode="over">
-      [placeholder]
+    <md-sidenav #sideNavMenu mode="over" style="background-color: #fafafa">
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>add_circle_outline</md-icon>
+          <span>New Category</span>
+        </div>
+      </div>
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>edit</md-icon>
+          <span>Edit Category</span>
+        </div>
+      </div>
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>delete_forever</md-icon>
+          <span>Delete Category</span>
+        </div>
+      </div>
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>show_chart</md-icon>
+          <span>Show Graph</span>
+        </div>
+      </div>
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>add_alert</md-icon>
+          <span>Alerts</span>
+        </div>
+      </div>
     </md-sidenav>
 
     <router-outlet></router-outlet>

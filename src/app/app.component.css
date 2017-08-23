@@ -1,0 +1,23 @@
+.sideNavItem {
+  height: 3em;
+  width: 15em;
+  padding-left: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sideNavItem:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.sideNavItem .inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sideNavItem .inner span {
+  padding-left: 1em;
+}
