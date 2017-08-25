@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from './home/home.component';
 import { NewCategoryDialogComponent } from './new-category-dialog/new-category-dialog.component';
+import {CategoryService} from "./services/category.service";
 
 const routes: Routes = [{
   path: '',
@@ -44,7 +45,9 @@ const routes: Routes = [{
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    CategoryService
+  ],
   bootstrap: [AppComponent],
   entryComponents: [ NewCategoryDialogComponent ]
 })

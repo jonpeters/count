@@ -1,6 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {MdDialog, MdSnackBar} from "@angular/material";
 import {NewCategoryDialogComponent} from "./new-category-dialog/new-category-dialog.component";
+import {CategoryService} from "./services/category.service";
+import {Category} from "./model/category";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,7 @@ export class AppComponent {
 
   @ViewChild("sideNavMenu") sideNavMenu;
 
-  constructor(private dialog: MdDialog, private snackbar: MdSnackBar) {}
+  constructor(private dialog: MdDialog, private snackbar: MdSnackBar, private categoryService: CategoryService) {}
 
   handleNewCategory() : void {
 
@@ -27,8 +29,10 @@ export class AppComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.sideNavMenu.close();
-        this.snackbar.open(`Created category '${data.categoryName}'`, "OK", {
-          duration: 3000
+        this.categoryService.createNewCategory(new Category(data.categoryName)).subscribe((newCategory: Category) => {
+          this.snackbar.open(`Created category '${newCategory.name}'`, "OK", {
+            duration: 3000
+          });
         });
       }
     });
