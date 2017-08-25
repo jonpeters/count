@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Category} from "../model/category";
+import { Category } from "../model/category";
+import { CategoryService } from "../services/category.service";
 
 @Component({
   selector: 'app-home',
@@ -8,17 +9,22 @@ import {Category} from "../model/category";
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private categoryService: CategoryService) { }
 
   categories: Array<Category> = new Array<Category>();
 
   ngOnInit() {
-    for (var i=0; i<10; i++) {
-      this.categories.push({
-        _id: null,
-        name: "Category " + String.fromCharCode(i+65)
-      });
-    }
+    // initial loading
+    this.getAllCategories();
+
+    // listen for when categories are added or removed
+    this.categoryService.getObservable().subscribe(() => this.getAllCategories());
+  }
+
+  private getAllCategories() : void {
+    this.categoryService.getAllCategories().subscribe((categories: Array<Category>) => {
+      this.categories = categories;
+    });
   }
 
 }
