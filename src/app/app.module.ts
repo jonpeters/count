@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -6,13 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
   MdCardModule, MdToolbarModule, MdMenuModule, MdIconModule, MdButtonModule,
-  MdSidenavModule, MdDialogModule, MdInputModule, MdSnackBarModule
+  MdSidenavModule, MdDialogModule, MdInputModule, MdSnackBarModule, MdCheckboxModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 import { HomeComponent } from './home/home.component';
 import { NewCategoryDialogComponent } from './new-category-dialog/new-category-dialog.component';
 import {CategoryService} from "./services/category.service";
+import {GeneralEventService} from "./services/general-event.service";
 
 const routes: Routes = [{
   path: '',
@@ -22,6 +23,13 @@ const routes: Routes = [{
   path: 'home',
   component: HomeComponent
 }];
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any> {
+    'pinch': { enable: false },
+    'rotate': { enable: false }
+  }
+}
 
 @NgModule({
   declarations: [
@@ -42,11 +50,17 @@ const routes: Routes = [{
     MdDialogModule,
     MdInputModule,
     MdSnackBarModule,
+    MdCheckboxModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
-    CategoryService
+    CategoryService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    },
+    GeneralEventService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ NewCategoryDialogComponent ]

@@ -1,3 +1,8 @@
 <div style="display: flex; flex-wrap: wrap">
-  <md-card *ngFor="let category of categories">{{ category.name }}</md-card>
+  <md-card class="category"
+           (press)="handlePressCategory(category)"
+           *ngFor="let category of categories">
+      <md-checkbox *ngIf="isSelectMode"></md-checkbox>
+    {{ category.name }}
+  </md-card>
 </div>

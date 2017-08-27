@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from "../model/category";
 import { CategoryService } from "../services/category.service";
+import {GeneralEventService} from "../services/general-event.service";
+import {GeneralEvent} from "../model/general-event";
 
 @Component({
   selector: 'app-home',
@@ -9,9 +11,11 @@ import { CategoryService } from "../services/category.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService,
+              private generalEventService: GeneralEventService) { }
 
   categories: Array<Category> = new Array<Category>();
+  isSelectMode: boolean = false;
 
   ngOnInit() {
     // initial loading
@@ -19,12 +23,21 @@ export class HomeComponent implements OnInit {
 
     // listen for when categories are added or removed
     this.categoryService.getObservable().subscribe(() => this.getAllCategories());
+
+    // listen for when select-mode is canceled
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "set-select-mode")
+      .subscribe((event: GeneralEvent) => this.isSelectMode = event.body);
   }
 
   private getAllCategories() : void {
     this.categoryService.getAllCategories().subscribe((categories: Array<Category>) => {
       this.categories = categories;
     });
+  }
+
+  handlePressCategory(category: Category) : void {
+    this.generalEventService.broadcastEvent("set-select-mode", true);
   }
 
 }

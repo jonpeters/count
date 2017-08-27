@@ -3,6 +3,8 @@ import {MdDialog, MdSnackBar} from "@angular/material";
 import {NewCategoryDialogComponent} from "./new-category-dialog/new-category-dialog.component";
 import {CategoryService} from "./services/category.service";
 import {Category} from "./model/category";
+import {GeneralEventService} from "./services/general-event.service";
+import {GeneralEvent} from "./model/general-event";
 
 @Component({
   selector: 'app-root',
@@ -13,9 +15,20 @@ export class AppComponent {
 
   @ViewChild("sideNavMenu") sideNavMenu;
 
+  isSelectMode: boolean = false;
+
   constructor(private dialog: MdDialog,
               private snackbar: MdSnackBar,
-              private categoryService: CategoryService) {}
+              private categoryService: CategoryService,
+              private generalEventService: GeneralEventService) {}
+
+  ngOnInit() {
+
+    // listen for when select-mode is set or un-set
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "set-select-mode")
+      .subscribe((event: GeneralEvent) => this.isSelectMode = event.body);
+  }
 
   handleNewCategory() : void {
 
@@ -42,5 +55,9 @@ export class AppComponent {
         });
       }
     });
+  }
+
+  handleCancelSelect() : void {
+    this.generalEventService.broadcastEvent("set-select-mode", false);
   }
 }
