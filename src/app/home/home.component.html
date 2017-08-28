@@ -2,7 +2,7 @@
   <md-card class="category"
            (press)="handlePressCategory(category)"
            *ngFor="let category of categories">
-      <md-checkbox *ngIf="isSelectMode"></md-checkbox>
+      <md-checkbox *ngIf="isSelectMode" [(ngModel)]="category.selected" (change)="handleCheckboxChange()"></md-checkbox>
     {{ category.name }}
   </md-card>
 </div>

@@ -29,6 +29,10 @@ export class CategoryService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  public deleteCategories(ids: Array<string>) : Observable<any> {
+    return this.http.post(`${this.getBaseUrl()}/api/categories`, ids);
+  }
+
   public getObservable() : Observable<any> {
     return this.observable;
   }

@@ -22,7 +22,7 @@
           <span>Edit Category</span>
         </div>
       </div>
-      <div class="sideNavItem">
+      <div class="sideNavItem" (click)="handleDeleteCategory()">
         <div class="inner">
           <md-icon>delete_forever</md-icon>
           <span>Delete Category</span>
@@ -38,6 +38,12 @@
         <div class="inner">
           <md-icon>add_alert</md-icon>
           <span>Alerts</span>
+        </div>
+      </div>
+      <div class="sideNavItem">
+        <div class="inner">
+          <md-icon>power_settings_new</md-icon>
+          <span>Log Out</span>
         </div>
       </div>
     </md-sidenav>

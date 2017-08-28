@@ -1,0 +1,7 @@
+<h2 md-dialog-title>{{ config.title }}</h2>
+<md-dialog-content>
+  {{ config.message }}
+</md-dialog-content>
+<md-dialog-actions>
+  <button *ngFor="let button of config.buttons" md-button [md-dialog-close]="button.returnValue">{{ button.label }}</button>
+</md-dialog-actions>

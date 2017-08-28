@@ -27,7 +27,10 @@ export class HomeComponent implements OnInit {
     // listen for when select-mode is canceled
     this.generalEventService.getObservable()
       .filter((event: GeneralEvent) => event.type === "set-select-mode")
-      .subscribe((event: GeneralEvent) => this.isSelectMode = event.body);
+      .subscribe((event: GeneralEvent) => {
+        this.isSelectMode = event.body;
+        this.categories.forEach(c => c.selected = false);
+      });
   }
 
   private getAllCategories() : void {
@@ -38,6 +41,11 @@ export class HomeComponent implements OnInit {
 
   handlePressCategory(category: Category) : void {
     this.generalEventService.broadcastEvent("set-select-mode", true);
+  }
+
+  handleCheckboxChange() : void {
+    // broadcast all currently selected categories
+    this.generalEventService.broadcastEvent("select", this.categories);
   }
 
 }
