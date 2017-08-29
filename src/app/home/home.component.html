@@ -1,8 +1,10 @@
 <div style="display: flex; flex-wrap: wrap">
   <md-card class="category"
            (press)="handlePressCategory(category)"
+           (tap)="handleTapCategory(category)"
            *ngFor="let category of categories">
       <md-checkbox *ngIf="isSelectMode" [(ngModel)]="category.selected" (change)="handleCheckboxChange()"></md-checkbox>
+    {{ category.count }}
     {{ category.name }}
   </md-card>
 </div>

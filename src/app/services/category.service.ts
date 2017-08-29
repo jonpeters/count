@@ -33,6 +33,12 @@ export class CategoryService {
     return this.http.post(`${this.getBaseUrl()}/api/categories`, ids);
   }
 
+  public incrementCategoryCount(id: string) : Observable<Category> {
+    return this.http.post(`${this.getBaseUrl()}/api/increment-category-count/${id}`, {})
+      .map((response: Response) => response.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   public getObservable() : Observable<any> {
     return this.observable;
   }

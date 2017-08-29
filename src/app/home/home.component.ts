@@ -48,4 +48,10 @@ export class HomeComponent implements OnInit {
     this.generalEventService.broadcastEvent("select", this.categories);
   }
 
+  handleTapCategory(category: Category) : void {
+    this.categoryService.incrementCategoryCount(category._id).subscribe((resultCategory: Category) => {
+      category.count = resultCategory.count;
+    });
+  }
+
 }
