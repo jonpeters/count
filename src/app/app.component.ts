@@ -6,6 +6,8 @@ import {Category} from "./model/category";
 import {GeneralEventService} from "./services/general-event.service";
 import {GeneralEvent} from "./model/general-event";
 import {GenericDialogComponent} from "./generic-dialog/generic-dialog.component";
+import {Router} from "@angular/router";
+import {Observable} from "rxjs";
 
 const emptyArray: Array<Category> = new Array<Category>();
 
@@ -25,7 +27,8 @@ export class AppComponent {
   constructor(private dialog: MdDialog,
               private snackbar: MdSnackBar,
               private categoryService: CategoryService,
-              private generalEventService: GeneralEventService) {}
+              private generalEventService: GeneralEventService,
+              private router: Router) {}
 
   ngOnInit() {
 
@@ -73,22 +76,10 @@ export class AppComponent {
   }
 
   handleDeleteCategory() : void {
-    let selectedCategories: Array<Category> = this.categories.filter(c => c.selected);
-
-    if (selectedCategories.length === 0) {
-
-      this.dialog.open(GenericDialogComponent, {
-        data: {
-          title: "No Categories Selected",
-          message: "No categories have been selected",
-          buttons: [{
-            returnValue: true,
-            label: "OK"
-          }]
-        }
-      });
-
-    } else {
+    this.doSelectedCategoriesCheck()
+      .first()
+      .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
+      .subscribe((selectedCategories: Array<Category>) => {
 
       let plurality: string = selectedCategories.length === 1 ? "y" : "ies";
 
@@ -131,6 +122,35 @@ export class AppComponent {
           });
         }
       });
+    });
+  }
+
+  doSelectedCategoriesCheck() : Observable<Array<Category>> {
+    let selectedCategories: Array<Category> = this.categories.filter(c => c.selected);
+
+    if (selectedCategories.length === 0) {
+      return this.dialog.open(GenericDialogComponent, {
+        data: {
+          title: "No Categories Selected",
+          message: "No categories have been selected",
+          buttons: [{
+            returnValue: true,
+            label: "OK"
+          }]
+        }
+      }).afterClosed().map(() => selectedCategories);
     }
+
+    return Observable.of(selectedCategories);
+  }
+
+  handleShowGraph() : void {
+    this.doSelectedCategoriesCheck()
+      .first()
+      .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
+      .subscribe((selectedCategories: Array<Category>) => {
+        this.sideNavMenu.close();
+        this.router.navigate(['graph'], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
+      });
   }
 }

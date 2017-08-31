@@ -49,6 +49,11 @@ export class HomeComponent implements OnInit {
   }
 
   handleTapCategory(category: Category) : void {
+
+    // workaround; when in select mode, checking the box causes a tap event to be fired
+    // and event.stopPropagation has no effect :-/
+    if (this.isSelectMode) return;
+
     this.categoryService.incrementCategoryCount(category._id).subscribe((resultCategory: Category) => {
       category.count = resultCategory.count;
     });

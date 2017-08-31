@@ -17,3 +17,7 @@ md-toolbar-row {
   right: 20px;
   color: white;
 }
+
+.no-outline:focus {
+  outline: 0;
+}

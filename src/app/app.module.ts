@@ -15,6 +15,7 @@ import { NewCategoryDialogComponent } from './new-category-dialog/new-category-d
 import {CategoryService} from "./services/category.service";
 import {GeneralEventService} from "./services/general-event.service";
 import { GenericDialogComponent } from './generic-dialog/generic-dialog.component';
+import { GraphComponent } from './graph/graph.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +24,9 @@ const routes: Routes = [{
 }, {
   path: 'home',
   component: HomeComponent
+}, {
+  path: 'graph',
+  component: GraphComponent
 }];
 
 export class MyHammerConfig extends HammerGestureConfig {
@@ -37,7 +41,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     AppComponent,
     HomeComponent,
     NewCategoryDialogComponent,
-    GenericDialogComponent
+    GenericDialogComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
