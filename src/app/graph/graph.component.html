@@ -13,5 +13,11 @@
       </md-option>
     </md-select>
 
+    <md-select placeholder="Group By" [(ngModel)]="selectedGroupBy" (change)="handleChangeValue()">
+      <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
+        {{ timePeriod.viewValue }}
+      </md-option>
+    </md-select>
+
   </div>
 </div>

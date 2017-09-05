@@ -27,6 +27,7 @@ export class GraphComponent implements OnInit {
   }];
 
   selectedTimePeriod: string = this.timePeriods[0].value;
+  selectedGroupBy: string = this.timePeriods[0].value;
 
   constructor(private route: ActivatedRoute,
               private categoryService: CategoryService) {
@@ -44,7 +45,7 @@ export class GraphComponent implements OnInit {
     let multiplier = this.selectedTimePeriod === "hour" ? 1 : 24;
     let start = now - (this.duration * multiplier * ONE_HOUR_IN_MS);
 
-    this.categoryService.getTimeSeries(start, now, this.categoryIds).subscribe(result => {
+    this.categoryService.getTimeSeries(start, now, this.categoryIds, this.selectedGroupBy).subscribe(result => {
 
       result.sort((a, b) => {
         return a.unix_timestamp-b.unix_timestamp;
