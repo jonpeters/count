@@ -1,1 +1,17 @@
-<p *ngFor="let cat of categoryIds">{{ cat }}</p>
+<div style="margin: 10px 10px 10px 10px;">
+  <canvas #canvas></canvas>
+
+  <div>
+
+    <md-input-container style="width:5em">
+      <input mdInput [(ngModel)]="duration" required placeholder="Duration" (change)="handleChangeValue()">
+    </md-input-container>
+
+    <md-select placeholder="Time Period" [(ngModel)]="selectedTimePeriod" (change)="handleChangeValue()">
+      <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
+        {{ timePeriod.viewValue }}
+      </md-option>
+    </md-select>
+
+  </div>
+</div>

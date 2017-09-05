@@ -39,6 +39,12 @@ export class CategoryService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  public getTimeSeries(start: number, end: number, categoryId: string) : Observable<Array<{ unix_timestamp: number, value: number }>> {
+    return this.http.get(`${this.getBaseUrl()}/api/time-series?start=${start}&end=${end}&category_id=${categoryId}`)
+      .map((response: Response) => response.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   public getObservable() : Observable<any> {
     return this.observable;
   }
