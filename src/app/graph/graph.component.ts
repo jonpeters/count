@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CategoryService} from "../services/category.service";
 import {Chart} from "chart.js";
+import {Observable} from "rxjs";
+import {Category} from "../model/category";
 
 const ONE_HOUR_IN_MS = 60*60*1000;
 
@@ -45,13 +47,25 @@ export class GraphComponent implements OnInit {
     let multiplier = this.selectedTimePeriod === "hour" ? 1 : 24;
     let start = now - (this.duration * multiplier * ONE_HOUR_IN_MS);
 
-    this.categoryService.getTimeSeries(start, now, this.categoryIds, this.selectedGroupBy).subscribe(result => {
+    // need both data and category name (which are currently coming from
+    // different request/endpoints), thus need to ensure that both
+    // are available before instantiating chart instance
+    Observable.zip(
+      this.categoryService.getTimeSeries(start, now, this.categoryIds, this.selectedGroupBy),
+      this.categoryService.getCategory(this.categoryIds),
+      (data: Array<{ unix_timestamp: number, value: number }>, category: Category) => {
+        return {
+          data: data,
+          category: category
+        }
+      }
+    ).subscribe((result: { data: Array<{ unix_timestamp: number, value: number }>, category: Category }) => {
 
-      result.sort((a, b) => {
+      result.data.sort((a, b) => {
         return a.unix_timestamp-b.unix_timestamp;
       });
 
-      var data = result.map(d => {
+      var data = result.data.map(d => {
         return {
           x: new Date(d.unix_timestamp),
           y: d.value
@@ -59,7 +73,7 @@ export class GraphComponent implements OnInit {
       });
 
       var ctx = this.canvas.nativeElement.getContext("2d");
-      this.chart = new Chart(ctx, this.getConfig(data));
+      this.chart = new Chart(ctx, this.getConfig(data, result.category.name));
 
     });
   }
@@ -78,9 +92,10 @@ export class GraphComponent implements OnInit {
   /**
    * only a stop-gap
    */
-  private getConfig(data: any) {
+  private getConfig(data: any, categoryName: string) {
     let config = JSON.parse(JSON.stringify(this.defaultConfig));
     config.data.datasets[0].data = data;
+    config.data.datasets[0].label = categoryName;
     return config;
   }
 
@@ -91,7 +106,7 @@ export class GraphComponent implements OnInit {
 
       ],
       datasets: [{
-        label: "My First dataset",
+        label: null,
         //backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
         //borderColor: window.chartColors.red,
         fill: false,
