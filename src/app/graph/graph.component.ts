@@ -53,13 +53,13 @@ export class GraphComponent implements OnInit {
     Observable.zip(
       this.categoryService.getTimeSeries(start, now, this.categoryIds, this.selectedGroupBy),
       this.categoryService.getCategory(this.categoryIds),
-      (data: Array<{ unix_timestamp: number, value: number }>, category: Category) => {
+      (data: Array<{ unix_timestamp: number, count: number }>, category: Category) => {
         return {
           data: data,
           category: category
         }
       }
-    ).subscribe((result: { data: Array<{ unix_timestamp: number, value: number }>, category: Category }) => {
+    ).subscribe((result: { data: Array<{ unix_timestamp: number, count: number }>, category: Category }) => {
 
       result.data.sort((a, b) => {
         return a.unix_timestamp-b.unix_timestamp;
@@ -68,7 +68,7 @@ export class GraphComponent implements OnInit {
       var data = result.data.map(d => {
         return {
           x: new Date(d.unix_timestamp),
-          y: d.value
+          y: d.count
         }
       });
 
@@ -133,7 +133,7 @@ export class GraphComponent implements OnInit {
         yAxes: [{
           scaleLabel: {
             display: true,
-            labelString: 'value'
+            labelString: 'count'
           }
         }]
       },
