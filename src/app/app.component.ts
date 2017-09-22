@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {MdDialog, MdSnackBar} from "@angular/material";
 import {NewCategoryDialogComponent} from "./new-category-dialog/new-category-dialog.component";
 import {CategoryService} from "./services/category.service";
@@ -8,6 +8,7 @@ import {GeneralEvent} from "./model/general-event";
 import {GenericDialogComponent} from "./generic-dialog/generic-dialog.component";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {ApiService} from "./services/api.service";
 
 const emptyArray: Array<Category> = new Array<Category>();
 
@@ -29,7 +30,8 @@ export class AppComponent {
               private snackbar: MdSnackBar,
               private categoryService: CategoryService,
               private generalEventService: GeneralEventService,
-              private router: Router) {}
+              private router: Router,
+              private apiService: ApiService) {}
 
   ngOnInit() {
 
@@ -118,7 +120,7 @@ export class AppComponent {
             // hint to interested parties that the group of categories has changed
             this.categoryService.broadcast();
 
-            this.snackbar.open(`Deleted '${selectedCategories.length}' categor${plurality}`, "OK", {
+            this.snackbar.open(`Deleted ${selectedCategories.length} categor${plurality}`, "OK", {
               duration: 3000
             });
 
@@ -164,5 +166,15 @@ export class AppComponent {
   handleClickBack() : void {
     this.generalEventService.broadcastEvent("set-back-mode", false);
     this.router.navigate(["home"]);
+  }
+
+  handleSignOut() : void {
+    this.apiService.signOut();
+    this.router.navigate(["login"]);
+    this.sideNavMenu.close();
+  }
+
+  isAuthenticated() : boolean {
+    return this.apiService.isAuthenticated();
   }
 }

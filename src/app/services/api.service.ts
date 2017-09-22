@@ -34,6 +34,10 @@ export class ApiService {
     return this.token != null;
   }
 
+  public signOut() : void {
+    this.token = null;
+  }
+
   private handleError(observable: Observable<Response>) {
     return observable.map(response => response.json()).catch((error: any) => {
       if (error.status === 403) {
