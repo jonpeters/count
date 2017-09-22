@@ -16,6 +16,9 @@ import {CategoryService} from "./services/category.service";
 import {GeneralEventService} from "./services/general-event.service";
 import { GenericDialogComponent } from './generic-dialog/generic-dialog.component';
 import { GraphComponent } from './graph/graph.component';
+import {ApiService} from "./services/api.service";
+import { LoginComponent } from './login/login.component';
+import {AuthGuardService} from "./services/auth-guard.service";
 
 const routes: Routes = [{
   path: '',
@@ -23,10 +26,15 @@ const routes: Routes = [{
   pathMatch: 'full'
 }, {
   path: 'home',
-  component: HomeComponent
+  component: HomeComponent,
+  canActivate: [AuthGuardService]
 }, {
   path: 'graph',
-  component: GraphComponent
+  component: GraphComponent,
+  canActivate: [AuthGuardService]
+}, {
+  path: 'login',
+  component: LoginComponent
 }];
 
 export class MyHammerConfig extends HammerGestureConfig {
@@ -42,7 +50,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     HomeComponent,
     NewCategoryDialogComponent,
     GenericDialogComponent,
-    GraphComponent
+    GraphComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +77,9 @@ export class MyHammerConfig extends HammerGestureConfig {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: MyHammerConfig
     },
-    GeneralEventService
+    GeneralEventService,
+    ApiService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ NewCategoryDialogComponent, GenericDialogComponent ]

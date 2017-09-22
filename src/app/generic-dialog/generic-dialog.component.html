@@ -1,6 +1,13 @@
 <h2 md-dialog-title>{{ config.title }}</h2>
 <md-dialog-content>
-  {{ config.message }}
+  <div style="position: relative; width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center">
+    <div *ngIf="config.icon" style="flex: 1;">
+      <md-icon [style.color]="config.icon.color ? config.icon.color : ''">{{ config.icon.name }}</md-icon>
+    </div>
+    <div style="flex: 8;">
+      {{ config.message }}
+    </div>
+  </div>
 </md-dialog-content>
 <md-dialog-actions>
   <button *ngFor="let button of config.buttons" md-button [md-dialog-close]="button.returnValue">{{ button.label }}</button>
