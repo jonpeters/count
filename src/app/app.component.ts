@@ -21,6 +21,7 @@ export class AppComponent {
   @ViewChild("sideNavMenu") sideNavMenu;
 
   isSelectMode: boolean = false;
+  isBackMode: boolean = false;
 
   categories: Array<Category> = emptyArray;
 
@@ -36,6 +37,11 @@ export class AppComponent {
     this.generalEventService.getObservable()
       .filter((event: GeneralEvent) => event.type === "set-select-mode")
       .subscribe((event: GeneralEvent) => this.isSelectMode = event.body);
+
+    // listen for when back-mode is set or un-set
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "set-back-mode")
+      .subscribe((event: GeneralEvent) => setTimeout(() => this.isBackMode = event.body, 0));
 
     // listen for when categories are selected or de-selected
     this.generalEventService.getObservable()
@@ -149,8 +155,14 @@ export class AppComponent {
       .first()
       .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
       .subscribe((selectedCategories: Array<Category>) => {
+        this.generalEventService.broadcastEvent("set-select-mode", false);
         this.sideNavMenu.close();
         this.router.navigate(['graph'], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
       });
+  }
+
+  handleClickBack() : void {
+    this.generalEventService.broadcastEvent("set-back-mode", false);
+    this.router.navigate(["home"]);
   }
 }

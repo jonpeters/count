@@ -1,7 +1,10 @@
 <div style="position: absolute; width: 100%; height: 100%; background-color: green">
   <md-toolbar color="primary" style="height: 70px">
-    <button md-icon-button (click)="sideNavMenu.toggle()">
+    <button *ngIf="!isBackMode"md-icon-button (click)="sideNavMenu.toggle()">
       <md-icon>menu</md-icon>
+    </button>
+    <button *ngIf="isBackMode"md-icon-button (click)="handleClickBack()">
+      <md-icon>chevron_left</md-icon>
     </button>
     <button *ngIf="isSelectMode" md-icon-button (click)="handleCancelSelect()">
       <md-icon>clear</md-icon>

@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../services/category.service";
 import {Chart} from "chart.js";
 import {Observable} from "rxjs";
 import {Category} from "../model/category";
+import {GeneralEventService} from "../services/general-event.service";
 
 const ONE_HOUR_IN_MS = 60*60*1000;
 
@@ -32,7 +33,9 @@ export class GraphComponent implements OnInit {
   selectedGroupBy: string = this.timePeriods[0].value;
 
   constructor(private route: ActivatedRoute,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private generalEventService: GeneralEventService,
+              private router: Router) {
 
   }
 
@@ -79,6 +82,8 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.generalEventService.broadcastEvent("set-back-mode", true);
+
     this.route.queryParams.subscribe(params => {
       this.categoryIds = params["categoryIds"];
       this.updateChart();

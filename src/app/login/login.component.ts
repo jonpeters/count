@@ -20,7 +20,14 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.apiService.authenticate(this.username, this.password).subscribe(response => {
+    this.apiService.authenticate(this.username, this.password)
+      .catch((e: any) => {
+        this.snackbar.open("Unknown error. Try again later :-(", "OK", {
+          duration: 3000
+        });
+        return null;
+      })
+      .subscribe(response => {
       if (response.success === false) {
         this.snackbar.open("Username/password combination is not valid", "OK", {
           duration: 3000
