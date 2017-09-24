@@ -6,7 +6,7 @@
     <button *ngIf="isBackMode" md-icon-button (click)="handleClickBack()">
       <md-icon>chevron_left</md-icon>
     </button>
-    <button *ngIf="isSelectMode" md-icon-button (click)="handleCancelSelect()">
+    <button *ngIf="isSelectMode && isAuthenticated()" md-icon-button (click)="handleCancelSelect()">
       <md-icon>clear</md-icon>
     </button>
   </md-toolbar>

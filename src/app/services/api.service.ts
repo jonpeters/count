@@ -13,7 +13,15 @@ export class ApiService {
   constructor(private http: Http, private router: Router) { }
 
   public authenticate(username: string, password: string) {
-    return this.post("authenticate", { username: username, password: password }).do((json: { success: boolean, token: string }) => {
+    return this.doReturnedTokenParsing(this.post("authenticate", { username: username, password: password }));
+  }
+
+  public signUp(username: string, password: string) {
+    return this.doReturnedTokenParsing(this.post("sign-up", { username: username, password: password }));
+  }
+
+  private doReturnedTokenParsing(observable: Observable<any>) : Observable<any> {
+    return observable.do((json: { success: boolean, token: string }) => {
       if (json.token) {
         this.token = json.token;
         this.headers = new Headers();
