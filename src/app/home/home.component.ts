@@ -24,13 +24,10 @@ export class HomeComponent implements OnInit {
     // listen for when categories are added or removed
     this.categoryService.getObservable().subscribe(() => this.getAllCategories());
 
-    // listen for when select-mode is canceled
+    // listen for when select-mode is canceled (needed by actions e.g. delete category)
     this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-select-mode")
-      .subscribe((event: GeneralEvent) => {
-        this.isSelectMode = event.body;
-        this.categories.forEach(c => c.selected = false);
-      });
+      .filter((event: GeneralEvent) => event.type === "cancel-select-mode")
+      .subscribe((event: GeneralEvent) => this.cancelSelectMode());
   }
 
   private getAllCategories() : void {
@@ -39,8 +36,22 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  handlePressCategory(category: Category) : void {
-    this.generalEventService.broadcastEvent("set-select-mode", true);
+  handlePressCategory() : void {
+    this.isSelectMode = true;
+
+    this.generalEventService.broadcastEvent("set-right-control", {
+      icon: "clear",
+      clickHandler: () => this.cancelSelectMode()
+    });
+  }
+
+  private cancelSelectMode() : void {
+    // hide checkboxes
+    this.isSelectMode = false;
+    // un-check any checked checkboxes
+    this.categories.forEach(c => c.selected = false);
+    // clear the toolbar's right control, which is currently the cancel-select control
+    this.generalEventService.broadcastEvent("clear-right-control");
   }
 
   handleCheckboxChange() : void {

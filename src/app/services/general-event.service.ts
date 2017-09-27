@@ -25,7 +25,7 @@ export class GeneralEventService {
     return this.observable;
   }
 
-  public broadcastEvent(type: string, body: any) : void {
+  public broadcastEvent(type: string, body?: any) : void {
     this.subject.next(new GeneralEvent(type, body));
   }
 

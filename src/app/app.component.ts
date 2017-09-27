@@ -21,8 +21,8 @@ export class AppComponent {
 
   @ViewChild("sideNavMenu") sideNavMenu;
 
-  isSelectMode: boolean = false;
-  isBackMode: boolean = false;
+  rightControlConfig: any;
+  leftControlConfig: any;
 
   categories: Array<Category> = emptyArray;
 
@@ -35,20 +35,40 @@ export class AppComponent {
 
   ngOnInit() {
 
-    // listen for when select-mode is set or un-set
+    // listen for when right-side control is set
     this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-select-mode")
-      .subscribe((event: GeneralEvent) => this.isSelectMode = event.body);
+      .filter((event: GeneralEvent) => event.type === "set-right-control")
+      .subscribe((event: GeneralEvent) => this.rightControlConfig = event.body);
 
-    // listen for when back-mode is set or un-set
+    // listen for when right-side control is cleared
     this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-back-mode")
-      .subscribe((event: GeneralEvent) => setTimeout(() => this.isBackMode = event.body, 0));
+      .filter((event: GeneralEvent) => event.type === "clear-right-control")
+      .subscribe((event: GeneralEvent) => this.rightControlConfig = null);
+
+    // listen for when left-side control is set
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "set-left-control")
+      .subscribe((event: GeneralEvent) => this.leftControlConfig = event.body);
+
+    // listen for when left-side control is cleared
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "clear-left-control")
+      .subscribe((event: GeneralEvent) => this.leftControlConfig = null);
 
     // listen for when categories are selected or de-selected
     this.generalEventService.getObservable()
       .filter((event: GeneralEvent) => event.type === "select")
       .subscribe((event: GeneralEvent) => this.categories = event.body);
+
+    // display menu by default
+    this.enableMenu();
+  }
+
+  enableMenu() : void {
+    this.generalEventService.broadcastEvent("set-left-control", {
+      icon: "menu",
+      clickHandler: () => this.sideNavMenu.toggle()
+    });
   }
 
   handleNewCategory() : void {
@@ -79,8 +99,12 @@ export class AppComponent {
     });
   }
 
-  handleCancelSelect() : void {
-    this.generalEventService.broadcastEvent("set-select-mode", false);
+  handleClickLeftControl() : void {
+    this.leftControlConfig.clickHandler();
+  }
+
+  handleClickRightControl() : void {
+    this.rightControlConfig.clickHandler();
   }
 
   handleDeleteCategory() : void {
@@ -115,7 +139,7 @@ export class AppComponent {
           this.categoryService.deleteCategories(ids).subscribe(() => {
 
             // exit select-mode
-            this.generalEventService.broadcastEvent("set-select-mode", false);
+            this.generalEventService.broadcastEvent("cancel-select-mode");
 
             // hint to interested parties that the group of categories has changed
             this.categoryService.broadcast();
@@ -157,21 +181,24 @@ export class AppComponent {
       .first()
       .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
       .subscribe((selectedCategories: Array<Category>) => {
-        this.generalEventService.broadcastEvent("set-select-mode", false);
+        this.generalEventService.broadcastEvent("cancel-select-mode");
         this.sideNavMenu.close();
         this.router.navigate(['graph'], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
-      });
-  }
 
-  handleClickBack() : void {
-    this.generalEventService.broadcastEvent("set-back-mode", false);
-    this.router.navigate(["home"]);
+        this.generalEventService.broadcastEvent("set-left-control", {
+          icon: "chevron_left",
+          clickHandler: () => {
+            this.enableMenu();
+            this.router.navigate(["home"])
+          }
+        });
+      });
   }
 
   handleSignOut() : void {
     this.apiService.signOut();
-    this.router.navigate(["login"]);
     this.sideNavMenu.close();
+    this.router.navigate(["login"]);
   }
 
   isAuthenticated() : boolean {

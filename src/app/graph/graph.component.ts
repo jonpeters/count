@@ -33,11 +33,7 @@ export class GraphComponent implements OnInit {
   selectedGroupBy: string = this.timePeriods[0].value;
 
   constructor(private route: ActivatedRoute,
-              private categoryService: CategoryService,
-              private generalEventService: GeneralEventService,
-              private router: Router) {
-
-  }
+              private categoryService: CategoryService) {}
 
   updateChart() {
 
@@ -82,8 +78,6 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.generalEventService.broadcastEvent("set-back-mode", true);
-
     this.route.queryParams.subscribe(params => {
       this.categoryIds = params["categoryIds"];
       this.updateChart();
