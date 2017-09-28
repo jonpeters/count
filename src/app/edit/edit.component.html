@@ -1,0 +1,9 @@
+<div style="margin: 10px;">
+  <md-input-container>
+    <input mdInput [(ngModel)]="category.name" required placeholder="Category Name">
+  </md-input-container>
+</div>
+<br/>
+<md-card *ngFor="let instant of instants" style="margin: 10px">
+  {{ instant.unix_timestamp }}
+</md-card>

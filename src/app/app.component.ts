@@ -1,4 +1,4 @@
-import {Component, ViewChild, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {MdDialog, MdSnackBar} from "@angular/material";
 import {NewCategoryDialogComponent} from "./new-category-dialog/new-category-dialog.component";
 import {CategoryService} from "./services/category.service";
@@ -23,6 +23,7 @@ export class AppComponent {
 
   rightControlConfig: any;
   leftControlConfig: any;
+  title: string;
 
   categories: Array<Category> = emptyArray;
 
@@ -60,14 +61,23 @@ export class AppComponent {
       .filter((event: GeneralEvent) => event.type === "select")
       .subscribe((event: GeneralEvent) => this.categories = event.body);
 
+    // listen for title changes
+    this.generalEventService.getObservable()
+      .filter((event: GeneralEvent) => event.type === "set-title")
+      .subscribe((event: GeneralEvent) => this.title = event.body);
+
     // display menu by default
     this.enableMenu();
   }
 
   enableMenu() : void {
+    this.generalEventService.broadcastEvent("set-title", "Home");
+
     this.generalEventService.broadcastEvent("set-left-control", {
       icon: "menu",
-      clickHandler: () => this.sideNavMenu.toggle()
+      clickHandler: () => {
+        this.sideNavMenu.toggle();
+      }
     });
   }
 
@@ -181,24 +191,44 @@ export class AppComponent {
       .first()
       .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
       .subscribe((selectedCategories: Array<Category>) => {
+        this.generalEventService.broadcastEvent("set-title", "Graph");
         this.generalEventService.broadcastEvent("cancel-select-mode");
         this.sideNavMenu.close();
         this.router.navigate(['graph'], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
-
-        this.generalEventService.broadcastEvent("set-left-control", {
-          icon: "chevron_left",
-          clickHandler: () => {
-            this.enableMenu();
-            this.router.navigate(["home"])
-          }
-        });
+        this.enableBackControl();
       });
+  }
+
+  private enableBackControl() : void {
+    this.generalEventService.broadcastEvent("set-left-control", {
+      icon: "chevron_left",
+      clickHandler: () => {
+        this.enableMenu();
+        this.router.navigate(["home"])
+      }
+    });
   }
 
   handleSignOut() : void {
     this.apiService.signOut();
     this.sideNavMenu.close();
     this.router.navigate(["login"]);
+  }
+
+  handleEditCategory() : void {
+
+    // TODO allow only 1 selected category
+
+    this.doSelectedCategoriesCheck()
+      .first()
+      .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
+      .subscribe((selectedCategories: Array<Category>) => {
+        this.router.navigate(["edit"], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
+        this.sideNavMenu.close();
+        this.generalEventService.broadcastEvent("cancel-select-mode");
+        this.generalEventService.broadcastEvent("set-title", "Edit Category");
+        this.enableBackControl();
+      });
   }
 
   isAuthenticated() : boolean {

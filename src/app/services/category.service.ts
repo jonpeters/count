@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Category } from "../model/category";
 import {Observable, Subject} from "rxjs";
 import {ApiService} from "./api.service";
+import {Instant} from "../model/instant";
 
 @Injectable()
 export class CategoryService {
@@ -34,6 +35,11 @@ export class CategoryService {
   public getTimeSeries(start: number, end: number, categoryId: string, groupBy: string) : Observable<Array<{ unix_timestamp: number, value: number }>> {
     return this.api.get(`secure/time-series?start=${start}&end=${end}&category_id=${categoryId}&groupBy=${groupBy}`);
   }
+
+  public getInstants(categoryId: string) : Observable<Array<Instant>> {
+    return this.api.get(`secure/instants?category_id=${categoryId}`);
+  }
+
 
   public getObservable() : Observable<any> {
     return this.observable;

@@ -3,8 +3,13 @@
     <button *ngIf="leftControlConfig && isAuthenticated()" md-icon-button (click)="handleClickLeftControl()">
       <md-icon>{{ leftControlConfig.icon }}</md-icon>
     </button>
+    <span *ngIf="isAuthenticated()">{{ title }}</span>
     <button *ngIf="rightControlConfig && isAuthenticated()" md-icon-button (click)="handleClickRightControl()">
       <md-icon>{{ rightControlConfig.icon }}</md-icon>
+    </button>
+    <!-- just a spacer -->
+    <button *ngIf="!rightControlConfig || !isAuthenticated()" style="visibility:hidden">
+      <md-icon>clear</md-icon>
     </button>
   </md-toolbar>
 
@@ -16,7 +21,7 @@
           <span>New Category</span>
         </div>
       </div>
-      <div class="sideNavItem">
+      <div class="sideNavItem" (click)="handleEditCategory()">
         <div class="inner">
           <md-icon>edit</md-icon>
           <span>Edit Category</span>

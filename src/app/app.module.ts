@@ -19,6 +19,7 @@ import { GraphComponent } from './graph/graph.component';
 import {ApiService} from "./services/api.service";
 import { LoginComponent } from './login/login.component';
 import {AuthGuardService} from "./services/auth-guard.service";
+import { EditComponent } from './edit/edit.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,6 +34,10 @@ const routes: Routes = [{
   component: GraphComponent,
   canActivate: [AuthGuardService]
 }, {
+  path: 'edit',
+  component: EditComponent,
+  canActivate: [AuthGuardService]
+},{
   path: 'login',
   component: LoginComponent
 }];
@@ -51,7 +56,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     NewCategoryDialogComponent,
     GenericDialogComponent,
     GraphComponent,
-    LoginComponent
+    LoginComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
