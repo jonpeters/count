@@ -1,3 +1,14 @@
+<md-toolbar color="primary">
+  <button md-icon-button (click)="handleClickBack()">
+    <md-icon>chevron_left</md-icon>
+  </button>
+  <span>Graph</span>
+  <!-- just here for alignment -->
+  <button md-icon-button style="visibility:hidden">
+    <md-icon>clear</md-icon>
+  </button>
+</md-toolbar>
+
 <div style="margin: 10px 10px 10px 10px;">
   <canvas #canvas></canvas>
 
@@ -20,4 +31,5 @@
     </md-select>
 
   </div>
+
 </div>

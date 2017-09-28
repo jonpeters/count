@@ -33,11 +33,13 @@ export class GraphComponent implements OnInit {
   selectedGroupBy: string = this.timePeriods[0].value;
 
   constructor(private route: ActivatedRoute,
-              private categoryService: CategoryService) {}
+              private categoryService: CategoryService,
+              private router: Router) {}
 
   updateChart() {
 
-    // clear the canvas of any previous chart renderings
+    // clear the canvas of any previous chart renderings,
+    // otherwise strange flickers occur
     if (this.chart) {
       this.chart.destroy();
     }
@@ -88,8 +90,12 @@ export class GraphComponent implements OnInit {
     this.updateChart();
   }
 
+  handleClickBack() : void {
+    this.router.navigate(["home"]);
+  }
+
   /**
-   * only a stop-gap
+   * only a stop-gap to generate a boilerplate config for the chart.
    */
   private getConfig(data: any, categoryName: string) {
     let config = JSON.parse(JSON.stringify(this.defaultConfig));

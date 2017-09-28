@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GeneralEventService} from "../services/general-event.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../services/category.service";
 import {Category} from "../model/category";
 import {Instant} from "../model/instant";
@@ -18,7 +18,8 @@ export class EditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private generalEventService: GeneralEventService,
-              private categoryService: CategoryService) { }
+              private categoryService: CategoryService,
+              private router: Router) { }
 
   ngOnInit() {
     this.generalEventService.broadcastEvent("set-back-mode", true);
@@ -30,4 +31,7 @@ export class EditComponent implements OnInit {
     });
   }
 
+  handleClickBack() : void {
+    this.router.navigate(["home"]);
+  }
 }

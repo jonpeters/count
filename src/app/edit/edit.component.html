@@ -1,4 +1,14 @@
-<div style="margin: 10px;">
+<md-toolbar color="primary">
+  <button md-icon-button (click)="handleClickBack()">
+    <md-icon>chevron_left</md-icon>
+  </button>
+  <span>Edit Category</span>
+  <button md-icon-button>
+    <md-icon>check_circle</md-icon>
+  </button>
+</md-toolbar>
+
+<div style="margin: 10px 10px 10px 10px;">
   <md-input-container>
     <input mdInput [(ngModel)]="category.name" required placeholder="Category Name">
   </md-input-container>

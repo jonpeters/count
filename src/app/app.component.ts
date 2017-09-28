@@ -4,11 +4,11 @@ import {NewCategoryDialogComponent} from "./new-category-dialog/new-category-dia
 import {CategoryService} from "./services/category.service";
 import {Category} from "./model/category";
 import {GeneralEventService} from "./services/general-event.service";
-import {GeneralEvent} from "./model/general-event";
 import {GenericDialogComponent} from "./generic-dialog/generic-dialog.component";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {ApiService} from "./services/api.service";
+import {GeneralEvent} from "./model/general-event";
 
 const emptyArray: Array<Category> = new Array<Category>();
 
@@ -21,10 +21,6 @@ export class AppComponent {
 
   @ViewChild("sideNavMenu") sideNavMenu;
 
-  rightControlConfig: any;
-  leftControlConfig: any;
-  title: string;
-
   categories: Array<Category> = emptyArray;
 
   constructor(private dialog: MdDialog,
@@ -36,49 +32,18 @@ export class AppComponent {
 
   ngOnInit() {
 
-    // listen for when right-side control is set
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-right-control")
-      .subscribe((event: GeneralEvent) => this.rightControlConfig = event.body);
-
-    // listen for when right-side control is cleared
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "clear-right-control")
-      .subscribe((event: GeneralEvent) => this.rightControlConfig = null);
-
-    // listen for when left-side control is set
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-left-control")
-      .subscribe((event: GeneralEvent) => this.leftControlConfig = event.body);
-
-    // listen for when left-side control is cleared
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "clear-left-control")
-      .subscribe((event: GeneralEvent) => this.leftControlConfig = null);
+    // listen for when the menu button is clicked and toggle the side-menu
+    this.generalEventService
+      .getObservable()
+      .filter((event: GeneralEvent) => event.type == "toggle-side-menu")
+      .subscribe(() => this.sideNavMenu.toggle());
 
     // listen for when categories are selected or de-selected
-    this.generalEventService.getObservable()
+    this.generalEventService
+      .getObservable()
       .filter((event: GeneralEvent) => event.type === "select")
       .subscribe((event: GeneralEvent) => this.categories = event.body);
 
-    // listen for title changes
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "set-title")
-      .subscribe((event: GeneralEvent) => this.title = event.body);
-
-    // display menu by default
-    this.enableMenu();
-  }
-
-  enableMenu() : void {
-    this.generalEventService.broadcastEvent("set-title", "Home");
-
-    this.generalEventService.broadcastEvent("set-left-control", {
-      icon: "menu",
-      clickHandler: () => {
-        this.sideNavMenu.toggle();
-      }
-    });
   }
 
   handleNewCategory() : void {
@@ -107,14 +72,6 @@ export class AppComponent {
         });
       }
     });
-  }
-
-  handleClickLeftControl() : void {
-    this.leftControlConfig.clickHandler();
-  }
-
-  handleClickRightControl() : void {
-    this.rightControlConfig.clickHandler();
   }
 
   handleDeleteCategory() : void {
@@ -191,22 +148,10 @@ export class AppComponent {
       .first()
       .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
       .subscribe((selectedCategories: Array<Category>) => {
-        this.generalEventService.broadcastEvent("set-title", "Graph");
         this.generalEventService.broadcastEvent("cancel-select-mode");
         this.sideNavMenu.close();
         this.router.navigate(['graph'], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
-        this.enableBackControl();
       });
-  }
-
-  private enableBackControl() : void {
-    this.generalEventService.broadcastEvent("set-left-control", {
-      icon: "chevron_left",
-      clickHandler: () => {
-        this.enableMenu();
-        this.router.navigate(["home"])
-      }
-    });
   }
 
   handleSignOut() : void {
@@ -223,15 +168,9 @@ export class AppComponent {
       .first()
       .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
       .subscribe((selectedCategories: Array<Category>) => {
-        this.router.navigate(["edit"], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
         this.sideNavMenu.close();
+        this.router.navigate(["edit"], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
         this.generalEventService.broadcastEvent("cancel-select-mode");
-        this.generalEventService.broadcastEvent("set-title", "Edit Category");
-        this.enableBackControl();
       });
-  }
-
-  isAuthenticated() : boolean {
-    return this.apiService.isAuthenticated();
   }
 }

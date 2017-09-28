@@ -1,4 +1,5 @@
-- sign-up
 - sliding jwt refresh (re-fresh after 1/2 time expires)
+
 - store token in local storage (so that page refresh doesn't require re-auth)
+
 - figure out why access not through localhost doesn't work (angular/cli version?)

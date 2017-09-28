@@ -1,19 +1,5 @@
 <div style="position: absolute; width: 100%; height: 100%; background-color: green">
-  <md-toolbar color="primary" style="height: 70px">
-    <button *ngIf="leftControlConfig && isAuthenticated()" md-icon-button (click)="handleClickLeftControl()">
-      <md-icon>{{ leftControlConfig.icon }}</md-icon>
-    </button>
-    <span *ngIf="isAuthenticated()">{{ title }}</span>
-    <button *ngIf="rightControlConfig && isAuthenticated()" md-icon-button (click)="handleClickRightControl()">
-      <md-icon>{{ rightControlConfig.icon }}</md-icon>
-    </button>
-    <!-- just a spacer -->
-    <button *ngIf="!rightControlConfig || !isAuthenticated()" style="visibility:hidden">
-      <md-icon>clear</md-icon>
-    </button>
-  </md-toolbar>
-
-  <md-sidenav-container style="position: absolute; width: 100%; top: 70px; bottom:0px">
+  <md-sidenav-container style="position: absolute; width: 100%; top: 0px; bottom:0px">
     <md-sidenav #sideNavMenu mode="over" style="background-color: #fafafa">
       <div class="sideNavItem" (click)="handleNewCategory()">
         <div class="inner">

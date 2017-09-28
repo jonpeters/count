@@ -1,3 +1,13 @@
+<md-toolbar color="primary">
+  <button md-icon-button (click)="handleClickMenu()">
+    <md-icon>menu</md-icon>
+  </button>
+  <span>Home</span>
+  <button md-icon-button [style.visibility]="isSelectMode ? 'visible' : 'hidden'" (click)="handleClickCancelSelectMode()">
+    <md-icon>clear</md-icon>
+  </button>
+</md-toolbar>
+
 <div style="display: flex; flex-wrap: wrap">
   <md-card class="category"
            (press)="handlePressCategory(category)"

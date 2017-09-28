@@ -38,11 +38,6 @@ export class HomeComponent implements OnInit {
 
   handlePressCategory() : void {
     this.isSelectMode = true;
-
-    this.generalEventService.broadcastEvent("set-right-control", {
-      icon: "clear",
-      clickHandler: () => this.cancelSelectMode()
-    });
   }
 
   private cancelSelectMode() : void {
@@ -50,8 +45,6 @@ export class HomeComponent implements OnInit {
     this.isSelectMode = false;
     // un-check any checked checkboxes
     this.categories.forEach(c => c.selected = false);
-    // clear the toolbar's right control, which is currently the cancel-select control
-    this.generalEventService.broadcastEvent("clear-right-control");
   }
 
   handleCheckboxChange() : void {
@@ -68,6 +61,14 @@ export class HomeComponent implements OnInit {
     this.categoryService.incrementCategoryCount(category._id).subscribe((resultCategory: Category) => {
       category.count = resultCategory.count;
     });
+  }
+
+  handleClickCancelSelectMode() : void {
+    this.cancelSelectMode();
+  }
+
+  handleClickMenu() : void {
+    this.generalEventService.broadcastEvent("toggle-side-menu");
   }
 
 }
