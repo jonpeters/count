@@ -20,6 +20,7 @@ import {ApiService} from "./services/api.service";
 import { LoginComponent } from './login/login.component';
 import {AuthGuardService} from "./services/auth-guard.service";
 import { EditComponent } from './edit/edit.component';
+import { MomentPipe } from './pipes/moment.pipe';
 
 const routes: Routes = [{
   path: '',
@@ -57,7 +58,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     GenericDialogComponent,
     GraphComponent,
     LoginComponent,
-    EditComponent
+    EditComponent,
+    MomentPipe
   ],
   imports: [
     BrowserModule,
