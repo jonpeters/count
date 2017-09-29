@@ -34,6 +34,10 @@ export class ApiService {
     return this.handleError(this.http.post(`${environment.baseUrl}/${url}`, data, { headers: this.headers }));
   }
 
+  public put(url: string, data: any) : Observable<any> {
+    return this.handleError(this.http.put(`${environment.baseUrl}/${url}`, data, { headers: this.headers }));
+  }
+
   public get(url: string) : Observable<any> {
     return this.handleError(this.http.get(`${environment.baseUrl}/${url}`, { headers: this.headers }));
   }
