@@ -36,6 +36,13 @@ export class GraphComponent implements OnInit {
               private categoryService: CategoryService,
               private router: Router) {}
 
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.categoryIds = params["categoryIds"];
+      this.updateChart();
+    });
+  }
+
   updateChart() {
 
     // clear the canvas of any previous chart renderings,
@@ -76,13 +83,6 @@ export class GraphComponent implements OnInit {
       var ctx = this.canvas.nativeElement.getContext("2d");
       this.chart = new Chart(ctx, this.getConfig(data, result.category.name));
 
-    });
-  }
-
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.categoryIds = params["categoryIds"];
-      this.updateChart();
     });
   }
 
