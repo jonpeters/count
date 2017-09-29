@@ -33,11 +33,22 @@ export class CategoryService {
   }
 
   public getTimeSeries(start: number, end: number, categoryId: string, groupBy: string) : Observable<Array<{ unix_timestamp: number, value: number }>> {
-    return this.api.get(`secure/time-series?start=${start}&end=${end}&category_id=${categoryId}&groupBy=${groupBy}`);
+    return this.api.get(`secure/time-series?start=${start}&end=${end}&category_id=${categoryId}&groupBy=${groupBy}&offset=${new Date().getTimezoneOffset()}`);
   }
 
   public getInstants(categoryId: string) : Observable<Array<Instant>> {
     return this.api.get(`secure/instants?category_id=${categoryId}`);
+  }
+
+  public updateCategory(category: Category, instantsToDelete: Array<Instant>) : Observable<any> {
+
+    let body = {
+      categoryId: category._id,
+      categoryName: category.name,
+      instantIds: instantsToDelete.map(instant => instant._id)
+    };
+
+    return this.api.put("secure/category", body);
   }
 
 
