@@ -1,10 +1,10 @@
 md-card {
-  max-width: 9em;
-  max-height: 9em;
-  min-width: 9em;
-  min-height: 9em;
-  margin-top: 1em;
-  margin-left: 1em;
+  max-width: 9.75em;
+  max-height: 9.75em;
+  min-width: 9.75em;
+  min-height: 9.75em;
+  margin-top: .75em;
+  margin-left: .75em;
   text-align: center;
   display: flex;
 }

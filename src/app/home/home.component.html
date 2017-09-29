@@ -1,20 +1,26 @@
-<md-toolbar color="primary">
-  <button md-icon-button (click)="handleClickMenu()">
-    <md-icon>menu</md-icon>
-  </button>
-  <span>Home</span>
-  <button md-icon-button [style.visibility]="isSelectMode ? 'visible' : 'hidden'" (click)="handleClickCancelSelectMode()">
-    <md-icon>clear</md-icon>
-  </button>
-</md-toolbar>
+<div style="position: relative; width: 100%; height: 100%;">
 
-<div style="display: flex; flex-wrap: wrap">
-  <md-card class="category"
-           (press)="handlePressCategory(category)"
-           (tap)="handleTapCategory(category)"
-           *ngFor="let category of categories">
+  <!-- top toolbar -->
+  <md-toolbar color="primary" #toolbar>
+    <button md-icon-button (click)="handleClickMenu()">
+      <md-icon>menu</md-icon>
+    </button>
+    <span>Home</span>
+    <button md-icon-button [style.visibility]="isSelectMode ? 'visible' : 'hidden'" (click)="handleClickCancelSelectMode()">
+      <md-icon>clear</md-icon>
+    </button>
+  </md-toolbar>
+
+  <!-- scrollable content area -->
+  <div style="position: absolute; left: 0px; right: 0px; bottom: 0px; overflow: auto; display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start;" [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+    <md-card class="category"
+             (press)="handlePressCategory(category)"
+             (tap)="handleTapCategory(category)"
+             *ngFor="let category of categories">
       <md-checkbox *ngIf="isSelectMode" [(ngModel)]="category.selected" (change)="handleCheckboxChange()"></md-checkbox>
-    {{ category.count }}
-    {{ category.name }}
-  </md-card>
+      {{ category.count }}
+      {{ category.name }}
+    </md-card>
+  </div>
+
 </div>
