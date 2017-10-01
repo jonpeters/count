@@ -8,24 +8,27 @@ import {environment} from "../../environments/environment";
 export class ApiService {
 
   private token: string = null;
-  private headers: Headers = null;
+  private headers: Headers = new Headers();
 
   constructor(private http: Http, private router: Router) { }
 
   public authenticate(username: string, password: string) {
-    return this.doReturnedTokenParsing(this.post("authenticate", { username: username, password: password }));
+    return this.handleAuthenticationResponse(this.post("authenticate", { username: username, password: password }));
   }
 
   public signUp(username: string, password: string) {
-    return this.doReturnedTokenParsing(this.post("sign-up", { username: username, password: password }));
+    return this.handleAuthenticationResponse(this.post("sign-up", { username: username, password: password }));
   }
 
-  private doReturnedTokenParsing(observable: Observable<any>) : Observable<any> {
+  private handleAuthenticationResponse(observable: Observable<any>) : Observable<any> {
     return observable.do((json: { success: boolean, token: string }) => {
       if (json.token) {
         this.token = json.token;
         this.headers = new Headers();
         this.headers.append("x-access-token", this.token);
+
+        // save the token locally to avoid re-auth between page refreshes
+        localStorage.setItem("token", this.token);
       }
     });
   }
@@ -43,11 +46,17 @@ export class ApiService {
   }
 
   public isAuthenticated() : boolean {
+    if (!this.token) {
+      this.token = localStorage.getItem("token");
+      this.headers.append("x-access-token", this.token);
+    }
+
     return this.token != null;
   }
 
   public signOut() : void {
     this.token = null;
+    localStorage.removeItem("token");
   }
 
   private handleError(observable: Observable<Response>) {
