@@ -16,10 +16,17 @@
     <md-card class="category"
              (press)="handlePressCategory(category)"
              (tap)="handleTapCategory(category)"
-             *ngFor="let category of categories">
-      <md-checkbox *ngIf="isSelectMode" [(ngModel)]="category.selected" (change)="handleCheckboxChange()"></md-checkbox>
-      {{ category.count }}
-      {{ category.name }}
+             *ngFor="let category of categories"
+             style="border-radius: 20px;">
+
+      <div style="position:absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; border-radius: 20px; margin: 5px 5px 5px 5px; display: flex; align-items: center; justify-content: center">
+        <span style="font-size: 400%; opacity: .65; display: flex; align-items: center; justify-content: center"><b>{{ category.count }}</b></span>
+      </div>
+
+      <div style="position:absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; border-radius: 20px; margin: 10px 5px 5px 5px; display: flex; align-items: flex-start; justify-content: center">
+        <span style="font-size: 120%;">{{ category.name }}</span>
+      </div>
+
     </md-card>
   </div>
 
