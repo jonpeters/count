@@ -12,3 +12,39 @@ md-card {
 md-checkbox {
   margin-right: 1em;
 }
+
+.content-area {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+}
+
+.common {
+  position:absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  border-radius: 20px;
+  display: flex;
+  opacity: .65;
+  justify-content: center;
+}
+
+.selection-image-wrapper {
+  position:absolute;
+  opacity: .65;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 1em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}

@@ -6,25 +6,34 @@
       <md-icon>menu</md-icon>
     </button>
     <span>Home</span>
-    <button md-icon-button [style.visibility]="isSelectMode ? 'visible' : 'hidden'" (click)="handleClickCancelSelectMode()">
+    <button md-icon-button [style.visibility]="isSelectMode ? 'visible' : 'hidden'" (click)="handleClickUnselectAll()">
       <md-icon>clear</md-icon>
     </button>
   </md-toolbar>
 
   <!-- scrollable content area -->
-  <div style="position: absolute; left: 0px; right: 0px; bottom: 0px; overflow: auto; display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start;" [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+  <div class="content-area"
+       [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+
     <md-card class="category"
              (press)="handlePressCategory(category)"
              (tap)="handleTapCategory(category)"
              *ngFor="let category of categories"
              style="border-radius: 20px;">
 
-      <div style="position:absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; border-radius: 20px; margin: 5px 5px 5px 5px; display: flex; align-items: center; justify-content: center">
-        <span style="font-size: 400%; opacity: .65; display: flex; align-items: center; justify-content: center"><b>{{ category.count }}</b></span>
+      <div class="common" style="margin: 5px 5px 5px 5px; align-items: center;">
+        <span style="font-size: 400%;"><b>{{ category.count }}</b></span>
       </div>
 
-      <div style="position:absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; border-radius: 20px; margin: 10px 5px 5px 5px; display: flex; align-items: flex-start; justify-content: center">
-        <span style="font-size: 120%;">{{ category.name }}</span>
+      <div class="common" style="margin: 10px 5px 5px 5px; align-items: flex-start;">
+        <span style="font-size: 120%;"><b>{{ category.name }}</b></span>
+      </div>
+
+      <div class="selection-image-wrapper">
+        <img *ngIf="category.selected"
+             width="40em"
+             height="40em"
+             src="assets/images/selected.png" />
       </div>
 
     </md-card>

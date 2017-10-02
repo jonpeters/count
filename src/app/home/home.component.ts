@@ -36,8 +36,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  handlePressCategory() : void {
-    this.isSelectMode = true;
+  handlePressCategory(category: Category) : void {
+    category.selected = !category.selected;
+    this.isSelectMode = this.categories.filter(c => c.selected).length > 0;
+    this.generalEventService.broadcastEvent("select", this.categories);
   }
 
   private cancelSelectMode() : void {
@@ -47,23 +49,13 @@ export class HomeComponent implements OnInit {
     this.categories.forEach(c => c.selected = false);
   }
 
-  handleCheckboxChange() : void {
-    // broadcast all currently selected categories
-    this.generalEventService.broadcastEvent("select", this.categories);
-  }
-
   handleTapCategory(category: Category) : void {
-
-    // workaround; when in select mode, checking the box causes a tap event to be fired
-    // and event.stopPropagation has no effect :-/
-    if (this.isSelectMode) return;
-
     this.categoryService.incrementCategoryCount(category._id).subscribe((resultCategory: Category) => {
       category.count = resultCategory.count;
     });
   }
 
-  handleClickCancelSelectMode() : void {
+  handleClickUnselectAll() : void {
     this.cancelSelectMode();
   }
 
