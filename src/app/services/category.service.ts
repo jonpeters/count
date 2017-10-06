@@ -33,11 +33,11 @@ export class CategoryService {
   }
 
   public getTimeSeries(start: number, end: number, categoryId: string, groupBy: string) : Observable<Array<{ unix_timestamp: number, value: number }>> {
-    return this.api.get(`secure/time-series?start=${start}&end=${end}&category_id=${categoryId}&groupBy=${groupBy}&offset=${new Date().getTimezoneOffset()}`);
+    return this.api.get(`secure/time-series?start=${start}&end=${end}&categoryId=${categoryId}&groupBy=${groupBy}&offset=${new Date().getTimezoneOffset()}`);
   }
 
   public getInstants(categoryId: string) : Observable<Array<Instant>> {
-    return this.api.get(`secure/instants?category_id=${categoryId}`);
+    return this.api.get(`secure/instants?categoryId=${categoryId}`);
   }
 
   public updateCategory(category: Category, instantsToDelete: Array<Instant>) : Observable<any> {
