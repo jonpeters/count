@@ -3,6 +3,7 @@ import { Category } from "../model/category";
 import { CategoryService } from "../services/category.service";
 import {GeneralEventService} from "../services/general-event.service";
 import {GeneralEvent} from "../model/general-event";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -17,17 +18,32 @@ export class HomeComponent implements OnInit {
   categories: Array<Category> = new Array<Category>();
   isSelectMode: boolean = false;
 
+  /**
+   * observable subscriptions to be cleaned up on destroy
+   */
+  private subscriptions: Array<Subscription> = new Array<Subscription>();
+
   ngOnInit() {
     // initial loading
     this.getAllCategories();
 
     // listen for when categories are added or removed
-    this.categoryService.getObservable().subscribe(() => this.getAllCategories());
+    this.subscriptions.push(
+      this.categoryService.getObservable().subscribe(() => {
+        this.getAllCategories();
+      })
+    );
 
     // listen for when select-mode is canceled (needed by actions e.g. delete category)
-    this.generalEventService.getObservable()
-      .filter((event: GeneralEvent) => event.type === "cancel-select-mode")
-      .subscribe((event: GeneralEvent) => this.cancelSelectMode());
+    this.subscriptions.push(
+      this.generalEventService.getObservable()
+        .filter((event: GeneralEvent) => event.type === "cancel-select-mode")
+        .subscribe((event: GeneralEvent) => this.cancelSelectMode())
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((s: Subscription) => s.unsubscribe());
   }
 
   private getAllCategories() : void {

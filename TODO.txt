@@ -3,3 +3,5 @@
 - figure out why access not through localhost doesn't work (angular/cli version?)
 
 - nicer category aesthetics on home screen
+
+- trying to access app with expired token breaks
