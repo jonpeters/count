@@ -5,6 +5,7 @@ import {Chart} from "chart.js";
 import {Observable} from "rxjs";
 import {Category} from "../model/category";
 import {GeneralEventService} from "../services/general-event.service";
+import {UtilService} from "../services/util.service";
 
 const ONE_HOUR_IN_MS = 60*60*1000;
 
@@ -34,7 +35,8 @@ export class GraphComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private categoryService: CategoryService,
-              private router: Router) {}
+              private router: Router,
+              private utilService: UtilService) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -54,6 +56,13 @@ export class GraphComponent implements OnInit {
     let now = Date.now();
     let multiplier = this.selectedTimePeriod === "hour" ? 1 : 24;
     let start = now - (this.duration * multiplier * ONE_HOUR_IN_MS);
+
+    // TODO make history period configurable in UI
+    let historyPeriodLength = 20;
+
+    // adjust for history period for sma calculation
+    // (-1 because the first data point is included, along with the previous e.g. 19 data points)
+    start -= (multiplier * (historyPeriodLength-1) * ONE_HOUR_IN_MS);
 
     // need both data and category name (which are currently coming from
     // different request/endpoints), thus need to ensure that both
@@ -80,8 +89,12 @@ export class GraphComponent implements OnInit {
         }
       });
 
+      var sma = this.utilService.calculateSMA(historyPeriodLength, data, "x", "y");
+
+      data = data.slice(historyPeriodLength-1, data.length);
+
       var ctx = this.canvas.nativeElement.getContext("2d");
-      this.chart = new Chart(ctx, this.getConfig(data, result.category.name));
+      this.chart = new Chart(ctx, this.getConfig(data, result.category.name, sma));
 
     });
   }
@@ -97,10 +110,12 @@ export class GraphComponent implements OnInit {
   /**
    * only a stop-gap to generate a boilerplate config for the chart.
    */
-  private getConfig(data: any, categoryName: string) {
+  private getConfig(data: any, categoryName: string, sma: any) {
     let config = JSON.parse(JSON.stringify(this.defaultConfig));
     config.data.datasets[0].data = data;
     config.data.datasets[0].label = categoryName;
+    config.data.datasets[1].data = sma;
+    config.data.datasets[1].label = "SMA (20)";
     return config;
   }
 
@@ -114,6 +129,12 @@ export class GraphComponent implements OnInit {
         label: null,
         //backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
         //borderColor: window.chartColors.red,
+        fill: false,
+        data: null
+      }, {
+        label: null,
+        backgroundColor: "red",
+        borderColor: "red",
         fill: false,
         data: null
       }]

@@ -21,6 +21,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthGuardService} from "./services/auth-guard.service";
 import { EditComponent } from './edit/edit.component';
 import { MomentPipe } from './pipes/moment.pipe';
+import {UtilService} from "./services/util.service";
 
 const routes: Routes = [{
   path: '',
@@ -87,7 +88,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     },
     GeneralEventService,
     ApiService,
-    AuthGuardService
+    AuthGuardService,
+    UtilService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ NewCategoryDialogComponent, GenericDialogComponent ]
