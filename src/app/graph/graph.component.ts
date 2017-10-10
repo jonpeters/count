@@ -127,14 +127,14 @@ export class GraphComponent implements OnInit {
       ],
       datasets: [{
         label: null,
-        //backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-        //borderColor: window.chartColors.red,
+        backgroundColor: "rgba(63, 81, 181, .5)",
+        borderColor: "rgba(63, 81, 181, .5)",
         fill: false,
         data: null
       }, {
         label: null,
-        backgroundColor: "red",
-        borderColor: "red",
+        // backgroundColor: "red",
+        // borderColor: "red",
         fill: false,
         data: null
       }]

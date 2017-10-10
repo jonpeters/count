@@ -4,6 +4,10 @@ import { CategoryService } from "../services/category.service";
 import {GeneralEventService} from "../services/general-event.service";
 import {GeneralEvent} from "../model/general-event";
 import {Subscription} from "rxjs";
+import {Alert} from "../model/alert";
+import {MdDialog} from "@angular/material";
+import {GenericDialogComponent} from "../generic-dialog/generic-dialog.component";
+import {MomentPipe} from "../pipes/moment.pipe";
 
 @Component({
   selector: 'app-home',
@@ -13,7 +17,8 @@ import {Subscription} from "rxjs";
 export class HomeComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
-              private generalEventService: GeneralEventService) { }
+              private generalEventService: GeneralEventService,
+              private dialog: MdDialog) { }
 
   categories: Array<Category> = new Array<Category>();
   isSelectMode: boolean = false;
@@ -66,8 +71,29 @@ export class HomeComponent implements OnInit {
   }
 
   handleTapCategory(category: Category) : void {
-    this.categoryService.incrementCategoryCount(category._id).subscribe((resultCategory: Category) => {
-      category.count = resultCategory.count;
+    this.categoryService.incrementCategoryCount(category._id).subscribe((result: { category: Category, alerts: Array<Alert> }) => {
+      category.count = result.category.count;
+
+      result.alerts.forEach((alert: Alert) => {
+        let message = `A statistically high value of ${alert.value}\ 
+          has been detected in the "${category.name}" category for the period of\ 
+          ${(new MomentPipe()).transform(alert.unix_timestamp, "MM/DD/YYYY hh:mm:ss a")}`;
+
+        this.dialog.open(GenericDialogComponent, {
+          data: {
+            title: `Alert Detected`,
+            message: message,
+            buttons: [{
+              returnValue: true,
+              label: "OK"
+            }],
+            icon: {
+              color: "#FFA07A",
+              name: "warning"
+            }
+          }
+        })
+      });
     });
   }
 

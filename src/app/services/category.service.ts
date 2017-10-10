@@ -3,6 +3,7 @@ import { Category } from "../model/category";
 import {Observable, Subject} from "rxjs";
 import {ApiService} from "./api.service";
 import {Instant} from "../model/instant";
+import {Alert} from "../model/alert";
 
 @Injectable()
 export class CategoryService {
@@ -28,8 +29,8 @@ export class CategoryService {
     return this.api.post("secure/categories", ids);
   }
 
-  public incrementCategoryCount(id: string) : Observable<Category> {
-    return this.api.post(`secure/increment-category-count/${id}`, {});
+  public incrementCategoryCount(id: string) : Observable<{ category: Category, alerts: Array<Alert> }> {
+    return this.api.post(`secure/increment-category-count/${id}?offset=${new Date().getTimezoneOffset()}`, {});
   }
 
   public getTimeSeries(start: number, end: number, categoryId: string, groupBy: string) : Observable<Array<{ unix_timestamp: number, value: number }>> {
