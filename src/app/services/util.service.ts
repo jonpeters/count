@@ -8,7 +8,7 @@ export class UtilService {
   public calculateSMA(period: number, data: Array<any>, keyProp: string, valueProp: string) : Array<any> {
     var sma: Array<any> = new Array();
     let total = 0;
-    for (let i=0; i<period; i++) total += data[i][valueProp];
+    for (let i=0; i<period && i<data.length; i++) total += data[i][valueProp];
     for (let i=period-1; i<data.length; i++) {
       let item = {};
       item[keyProp] = data[i][keyProp];
