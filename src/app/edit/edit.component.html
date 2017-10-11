@@ -10,7 +10,8 @@
     </button>
   </md-toolbar>
 
-  <div style="position: absolute; left: 0px; right: 0px; bottom: 0px;" [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+  <div style="position: absolute; left: 0px; right: 0px; bottom: 50px;"
+       [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
 
     <div style="margin: 10px 10px 10px 10px;" #categoryNameDiv>
       <md-input-container>
@@ -34,6 +35,14 @@
       </md-card>
     </div>
 
+  </div>
+
+  <div style="position: absolute; bottom: 0px; left: 0px; right: 0px">
+    <mat-paginator [length]="totalInstants"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   (page)="handlePageEvent($event)">
+    </mat-paginator>
   </div>
 
 </div>

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component, OnInit, Output, EventEmitter, AfterViewChecked, ChangeDetectorRef,
+  AfterViewInit, ViewChild
+} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../services/category.service";
 import {Category} from "../model/category";
@@ -18,6 +21,11 @@ export class EditComponent implements OnInit {
   instants: Array<Instant> = new Array<Instant>();
   deletedItemsHash = {};
 
+  // pagination
+  pageIndex: number = 0;
+  pageSize: number = 25;
+  totalInstants: number = 0;
+
   constructor(private route: ActivatedRoute,
               private categoryService: CategoryService,
               private router: Router,
@@ -28,7 +36,9 @@ export class EditComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.categoryIds = params["categoryIds"];
       this.categoryService.getCategory(this.categoryIds).subscribe((category: Category) => this.category = category);
-      this.categoryService.getInstants(this.categoryIds).subscribe((instants: Array<Instant>) => this.sortAndAssign(instants));
+
+      this.categoryService.getInstants(this.categoryIds, this.pageIndex, this.pageSize)
+        .subscribe((results: { instants: Array<Instant>, count: number }) => this.sortAndAssign(results));
     });
   }
 
@@ -79,14 +89,24 @@ export class EditComponent implements OnInit {
         duration: 3000
       });
 
-      this.categoryService.getInstants(this.categoryIds).subscribe((instants: Array<Instant>) => this.sortAndAssign(instants));
+      this.categoryService.getInstants(this.categoryIds, this.pageIndex, this.pageSize)
+        .subscribe((results : { instants: Array<Instant>, count: number }) => this.sortAndAssign(results));
     });
   }
 
-  private sortAndAssign(instants: Array<Instant>) {
-    this.instants = instants;
+  private sortAndAssign(results: { instants: Array<Instant>, count: number }) {
+    this.instants = results.instants;
+    this.totalInstants = results.count;
 
     // sort desc, assuming it is more likely the user will need to delete/correct a very recent instant
-    this.instants.sort((a, b) => b.unix_timestamp-a.unix_timestamp);
+    this.instants.sort((a, b) => b.unix_timestamp - a.unix_timestamp);
+  }
+
+  public handlePageEvent(event) : void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+
+    this.categoryService.getInstants(this.categoryIds, event.pageIndex, this.pageSize)
+      .subscribe((results: { instants: Array<Instant>, count: number }) => this.sortAndAssign(results));
   }
 }

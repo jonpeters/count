@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
   MdCardModule, MdToolbarModule, MdMenuModule, MdIconModule, MdButtonModule,
-  MdSidenavModule, MdDialogModule, MdInputModule, MdSnackBarModule, MdCheckboxModule, MdSelectModule
+  MdSidenavModule, MdDialogModule, MdInputModule, MdSnackBarModule, MdCheckboxModule, MdSelectModule, MdPaginatorModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
@@ -77,6 +77,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MdSnackBarModule,
     MdCheckboxModule,
     MdSelectModule,
+    MdPaginatorModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
