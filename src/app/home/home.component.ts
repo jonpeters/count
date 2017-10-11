@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit {
 
       result.alerts.forEach((alert: Alert) => {
         let message = `A statistically high value of ${alert.value}\ 
-          has been detected in the "${category.name}" category for the period of\ 
+          has been detected in the "${category.name}" category for the ${alert.group_by_level === "hour" ? "hourly" : "daily"} period of\ 
           ${(new MomentPipe()).transform(alert.unix_timestamp, "MM/DD/YYYY hh:mm:ss a")}`;
 
         this.dialog.open(GenericDialogComponent, {
