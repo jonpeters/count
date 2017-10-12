@@ -25,6 +25,10 @@ export class CategoryService {
     return this.api.get(`secure/category/${id}`);
   }
 
+  public getCategoryByName(name: string) : Observable<Category> {
+    return this.api.get(`secure/category-by-name/${name}`);
+  }
+
   public deleteCategories(ids: Array<string>) : Observable<any> {
     return this.api.post("secure/categories", ids);
   }

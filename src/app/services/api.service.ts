@@ -60,7 +60,7 @@ export class ApiService {
   }
 
   private handleError(observable: Observable<Response>) {
-    return observable.map(response => response.json()).catch((error: any) => {
+    return observable.map(response => response.text() ? response.json() : null).catch((error: any) => {
       if (error.status === 403) {
         this.token = null;
         this.router.navigate(['login']);

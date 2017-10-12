@@ -57,20 +57,45 @@ export class AppComponent {
       data: data
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.sideNavMenu.close();
+    dialogRef.afterClosed()
+      .first()
+      .do(() => this.sideNavMenu.close())
+      .filter(result => result)
+      // validate category name doesn't exist
+      .flatMap(() => this.categoryService.getCategoryByName(data.categoryName))
+      .flatMap((category: Category) => {
+        if (category) {
+          return Observable.throw(`Category name "${data.categoryName}" already exists`);
+        }
 
-        this.categoryService.createNewCategory(new Category(data.categoryName)).subscribe((newCategory: Category) => {
+        return this.categoryService.createNewCategory(new Category(data.categoryName));
+      })
+      .catch(err => {
 
-          // hint to interested parties that the group of categories has changed
-          this.categoryService.broadcast();
-
-          this.snackbar.open(`Created category '${newCategory.name}'`, "OK", {
-            duration: 3000
-          });
+        this.dialog.open(GenericDialogComponent, {
+          data: {
+            title: `Error`,
+            message: err,
+            buttons: [{
+              returnValue: true,
+              label: "OK"
+            }],
+            icon: {
+              color: "#FFA07A",
+              name: "error"
+            }
+          }
         });
-      }
+
+        return Observable.of();
+      })
+      .subscribe((newCategory: Category) => {
+        // hint to interested parties that the group of categories has changed
+        this.categoryService.broadcast();
+
+        this.snackbar.open(`Created category "${newCategory.name}"`, "OK", {
+          duration: 3000
+        });
     });
   }
 
@@ -94,32 +119,25 @@ export class AppComponent {
             label: "No"
           }]
         }
-      }).afterClosed().subscribe(result => {
+      }).afterClosed()
+        .first()
+        .do(() => this.sideNavMenu.close())
+        .filter(result => result)
+        .map(() => selectedCategories.map(c => c._id))
+        .flatMap(ids => this.categoryService.deleteCategories(ids))
+        .subscribe(() => {
+          // exit select-mode
+          this.generalEventService.broadcastEvent("cancel-select-mode");
 
-        if (result) {
+          // hint to interested parties that the group of categories has changed
+          this.categoryService.broadcast();
 
-          this.sideNavMenu.close();
-
-          // grab ids
-          let ids: Array<string> = selectedCategories.map(c => c._id);
-
-          this.categoryService.deleteCategories(ids).subscribe(() => {
-
-            // exit select-mode
-            this.generalEventService.broadcastEvent("cancel-select-mode");
-
-            // hint to interested parties that the group of categories has changed
-            this.categoryService.broadcast();
-
-            this.snackbar.open(`Deleted ${selectedCategories.length} categor${plurality}`, "OK", {
-              duration: 3000
-            });
-
-            // the categories list will have been refreshed above, thus clear this local reference
-            this.categories = emptyArray;
-
+          this.snackbar.open(`Deleted ${selectedCategories.length} categor${plurality}`, "OK", {
+            duration: 3000
           });
-        }
+
+          // the categories list will have been refreshed above, thus clear this local reference
+          this.categories = emptyArray;
       });
     });
   }
