@@ -22,6 +22,7 @@ import {AuthGuardService} from "./services/auth-guard.service";
 import { EditComponent } from './edit/edit.component';
 import { MomentPipe } from './pipes/moment.pipe';
 import {UtilService} from "./services/util.service";
+import { AlertsComponent } from './alerts/alerts.component';
 
 const routes: Routes = [{
   path: '',
@@ -39,7 +40,11 @@ const routes: Routes = [{
   path: 'edit',
   component: EditComponent,
   canActivate: [AuthGuardService]
-},{
+}, {
+  path: 'alerts',
+  component: AlertsComponent,
+  canActivate: [AuthGuardService]
+}, {
   path: 'login',
   component: LoginComponent
 }];
@@ -60,7 +65,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     GraphComponent,
     LoginComponent,
     EditComponent,
-    MomentPipe
+    MomentPipe,
+    AlertsComponent
   ],
   imports: [
     BrowserModule,

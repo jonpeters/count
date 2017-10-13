@@ -191,4 +191,17 @@ export class AppComponent {
         this.generalEventService.broadcastEvent("cancel-select-mode");
       });
   }
+
+  handleAlerts() : void {
+
+    this.doSelectedCategoriesCheck()
+      .first()
+      .do(() => this.sideNavMenu.close())
+      .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
+      .subscribe((selectedCategories: Array<Category>) => {
+        this.router.navigate(["alerts"], { queryParams: { categoryIds: selectedCategories.map(c => c._id) }});
+        this.generalEventService.broadcastEvent("cancel-select-mode");
+      });
+
+  }
 }

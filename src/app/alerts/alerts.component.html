@@ -1,0 +1,31 @@
+<div style="position: relative; width: 100%; height: 100%;">
+
+  <md-toolbar color="primary" #toolbar>
+    <button md-icon-button (click)="handleClickBack()">
+      <md-icon>chevron_left</md-icon>
+    </button>
+    <span>Alert History</span>
+    <button md-icon-button style="visibility: hidden">
+      <md-icon>chevron_left</md-icon>
+    </button>
+  </md-toolbar>
+
+  <div *ngIf="alerts.length > 0" style="position: absolute; left: 0px; right: 0px; bottom: 0px;"
+       [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+
+    <div style="position: absolute; bottom: 0px; top: 0; left: 0px; right: 0px; overflow: auto;">
+      <md-card *ngFor="let alert of alerts" style="margin: 10px; display:flex">
+        <div style="flex: 7; display: flex; align-items: center">
+          {{ alert.unix_timestamp | moment: "MM/DD/YYYY hh:mm:ss a" }}
+        </div>
+      </md-card>
+    </div>
+
+  </div>
+
+  <div *ngIf="alerts.length == 0" style="position: absolute; left: 0px; right: 0px; bottom: 0px; display: flex; align-items: center; justify-content: center"
+       [ngStyle]="{ top: toolbar._elementRef.nativeElement.offsetHeight + 'px' }">
+    <i>No alerts</i>
+  </div>
+
+</div>

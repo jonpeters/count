@@ -45,6 +45,10 @@ export class CategoryService {
     return this.api.get(`secure/instants?categoryId=${categoryId}&pageIndex=${pageIndex}&pageSize=${pageSize}`);
   }
 
+  public getAlerts(categoryId: string) : Observable<Array<Alert>> {
+    return this.api.get(`secure/alerts-by-category/${categoryId}`);
+  }
+
   public updateCategory(category: Category, instantsToDelete: Array<Instant>) : Observable<any> {
 
     let body = {
