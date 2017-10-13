@@ -49,6 +49,10 @@ export class CategoryService {
     return this.api.get(`secure/alerts-by-category/${categoryId}`);
   }
 
+  public generateInstants(categoryId: string, numDays: number) : Observable<void> {
+    return this.api.post(`secure/generate-instants-for-category/${categoryId}?numDays=${numDays}`, {});
+  }
+
   public updateCategory(category: Category, instantsToDelete: Array<Instant>) : Observable<any> {
 
     let body = {
@@ -59,7 +63,6 @@ export class CategoryService {
 
     return this.api.put("secure/category", body);
   }
-
 
   public getObservable() : Observable<any> {
     return this.observable;

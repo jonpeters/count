@@ -204,4 +204,38 @@ export class AppComponent {
       });
 
   }
+
+  handleMockData() : void {
+
+    this.doSelectedCategoriesCheck()
+      .first()
+      .do(() => {
+        this.sideNavMenu.close();
+        this.generalEventService.broadcastEvent("cancel-select-mode");
+      })
+      .filter((selectedCategories: Array<Category>) => selectedCategories.length > 0)
+      .subscribe((selectedCategories: Array<Category>) => {
+        // TODO allow the number of days to come from the user
+        let observablesArray: Array<Observable<void>> = selectedCategories.map(c => this.categoryService.generateInstants(c._id, 90));
+        Observable.zip(...observablesArray).subscribe(() => {
+
+          this.dialog.open(GenericDialogComponent, {
+            data: {
+              title: `Data Generation`,
+              message: `Note that data generation is an asynchronous process on the server\ 
+                and may take some time to complete depending on the amount of data and the load on the server`,
+              buttons: [{
+                returnValue: true,
+                label: "OK"
+              }]
+            }
+          }).afterClosed().subscribe(() => {
+            // reload categories for the new count to be reflected
+            this.categoryService.broadcast();
+          })
+
+        });
+      });
+
+  }
 }
