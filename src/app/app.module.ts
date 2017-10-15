@@ -26,26 +26,26 @@ import { AlertsComponent } from './alerts/alerts.component';
 
 const routes: Routes = [{
   path: '',
-  redirectTo: 'home',
+  redirectTo: 'app/home',
   pathMatch: 'full'
 }, {
-  path: 'home',
+  path: 'app/home',
   component: HomeComponent,
   canActivate: [AuthGuardService]
 }, {
-  path: 'graph',
+  path: 'app/graph',
   component: GraphComponent,
   canActivate: [AuthGuardService]
 }, {
-  path: 'edit',
+  path: 'app/edit',
   component: EditComponent,
   canActivate: [AuthGuardService]
 }, {
-  path: 'alerts',
+  path: 'app/alerts',
   component: AlertsComponent,
   canActivate: [AuthGuardService]
 }, {
-  path: 'login',
+  path: 'app/login',
   component: LoginComponent
 }];
 

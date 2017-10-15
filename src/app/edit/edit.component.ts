@@ -43,7 +43,7 @@ export class EditComponent implements OnInit {
   }
 
   handleClickBack() : void {
-    this.router.navigate(["home"]);
+    this.router.navigate(["app/home"]);
   }
 
   toggleDeleteInstant(instant: Instant) : void {

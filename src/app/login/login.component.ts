@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
           duration: 3000
         });
       } else {
-        this.router.navigate(['home']);
+        this.router.navigate(['app/home']);
       }
     });
   }

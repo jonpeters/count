@@ -63,7 +63,7 @@ export class ApiService {
     return observable.map(response => response.text() ? response.json() : null).catch((error: any) => {
       if (error.status === 403) {
         this.token = null;
-        this.router.navigate(['login']);
+        this.router.navigate(['app/login']);
         return;
       }
 

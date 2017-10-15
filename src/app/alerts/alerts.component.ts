@@ -29,7 +29,7 @@ export class AlertsComponent implements OnInit {
   }
 
   handleClickBack() : void {
-    this.router.navigate(["home"]);
+    this.router.navigate(["app/home"]);
   }
 
 }
