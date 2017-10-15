@@ -12,24 +12,36 @@
 <div style="margin: 10px 10px 10px 10px;">
   <canvas #canvas></canvas>
 
-  <div>
+  <br/>
 
-    <md-input-container style="width:5em">
-      <input mdInput [(ngModel)]="duration" required placeholder="Duration" (change)="handleChangeValue()">
-    </md-input-container>
+  <div style="display: flex; align-items: center; justify-content: center;">
+    <div>
 
-    <md-select placeholder="Time Period" [(ngModel)]="selectedTimePeriod" (change)="handleChangeValue()">
-      <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
-        {{ timePeriod.viewValue }}
-      </md-option>
-    </md-select>
+      <div>
+        <md-input-container style="width:5em">
+          <input mdInput [(ngModel)]="duration" required placeholder="Duration" (change)="handleChangeValue()">
+        </md-input-container>
+      </div>
 
-    <md-select placeholder="Group By" [(ngModel)]="selectedGroupBy" (change)="handleChangeValue()">
-      <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
-        {{ timePeriod.viewValue }}
-      </md-option>
-    </md-select>
+      <div>
+        <md-select placeholder="Time Period" [(ngModel)]="selectedTimePeriod" (change)="handleChangeValue()">
+          <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
+            {{ timePeriod.viewValue }}
+          </md-option>
+        </md-select>
+      </div>
 
+      <br/>
+
+      <div>
+        <md-select placeholder="Group By" [(ngModel)]="selectedGroupBy" (change)="handleChangeValue()">
+          <md-option *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
+            {{ timePeriod.viewValue }}
+          </md-option>
+        </md-select>
+      </div>
+
+    </div>
   </div>
 
 </div>
