@@ -6,13 +6,16 @@ import {Observable} from "rxjs";
 import {Category} from "../model/category";
 import {GeneralEventService} from "../services/general-event.service";
 import {UtilService} from "../services/util.service";
+import {slideInOutAnimation} from "../_animations/slide-out";
 
 const ONE_HOUR_IN_MS = 60*60*1000;
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.css']
+  styleUrls: ['./graph.component.css'],
+  animations: [slideInOutAnimation],
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class GraphComponent implements OnInit {
 

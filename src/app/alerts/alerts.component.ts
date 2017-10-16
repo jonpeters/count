@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryService} from "../services/category.service";
 import {Alert} from "../model/alert";
+import {slideInOutAnimation} from "../_animations/slide-out";
 
 @Component({
   selector: 'app-alerts',
   templateUrl: './alerts.component.html',
-  styleUrls: ['./alerts.component.css']
+  styleUrls: ['./alerts.component.css'],
+  animations: [slideInOutAnimation],
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class AlertsComponent implements OnInit {
 

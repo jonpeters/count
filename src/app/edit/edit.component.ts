@@ -8,11 +8,14 @@ import {Category} from "../model/category";
 import {Instant} from "../model/instant";
 import {MdSnackBar, MdDialog} from "@angular/material";
 import {GenericDialogComponent} from "../generic-dialog/generic-dialog.component";
+import {slideInOutAnimation} from "../_animations/slide-out";
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.css'],
+  animations: [slideInOutAnimation],
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class EditComponent implements OnInit {
 

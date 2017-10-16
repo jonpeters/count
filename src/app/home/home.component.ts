@@ -8,11 +8,14 @@ import {Alert} from "../model/alert";
 import {MdDialog} from "@angular/material";
 import {GenericDialogComponent} from "../generic-dialog/generic-dialog.component";
 import {MomentPipe} from "../pipes/moment.pipe";
+import {slideInOutAnimation} from "../_animations/slide-out";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [slideInOutAnimation],
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class HomeComponent implements OnInit {
 
