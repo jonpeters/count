@@ -9,6 +9,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * Clone the repository: git clone https://github.com/jonpeters/count.git
 * cd into the project folder, run: `npm install`
 
+Note: this guide assumes that the back-end, https://github.com/jonpeters/count-server.git, has been setup.
+
 ## Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
