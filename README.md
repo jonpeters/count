@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Setup
 
-* Ensure Node.js + NPM installed; suggest using NVM (https://github.com/creationix/nvm)
+* Ensure Node.js + NPM installed (v8.4.0 + 5.3.0); suggest using NVM (https://github.com/creationix/nvm)
 
 ## Development server
 
