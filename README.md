@@ -7,12 +7,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * Ensure Node.js + NPM installed (v8.4.0 + 5.3.0); suggest using NVM (https://github.com/creationix/nvm)
 * Install @angular/cli (https://github.com/angular/angular-cli)
 * Clone the repository: git clone https://github.com/jonpeters/count.git
-* cd into the project folder, run: npm install
-* to start, run: npm start
+* cd into the project folder, run: `npm install`
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
